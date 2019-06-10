@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD SQL Map Config 3.0//EN"  
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias type="com.roadm.manager.model.UserInfo" alias="UserInfo" />
+		<typeAlias type="com.roadm.manager.model.Page" alias="Page" />
+		<typeAlias type="com.roadm.manager.model.RoleInfo" alias="RoleInfo" />
+	</typeAliases>
+	<plugins>
+		<plugin interceptor="com.roadm.manager.util.PagePlugin">
+			<property name="dialect" value="mysql" />
+			<property name="pageSqlId" value=".*listPage.*" />
+			<property name="pageSqlId2" value=".*searchPage.*" />
+		</plugin>
+	</plugins>
+
+	<mappers>
+		<mapper resource="mybatis/system.xml" />
+		<mapper resource="mybatis/UserInfo.xml" />
+		<mapper resource="mybatis/RoleInfo.xml" />
+	</mappers>
+
+
+</configuration>
+

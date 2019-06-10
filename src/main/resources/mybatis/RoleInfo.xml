@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.roadm.manager.mapper.RoleMapper">
+
+    <resultMap type="RoleInfo" id="roleResultMap">
+        <id column="id" property="role_id"/>
+        <id column="description" property="description"/>
+        <id column="create_user" property="create_user"/>
+        <result column="role_name" property="roleName"/>
+        <result column="rights" property="rights"/>
+    </resultMap>
+    
+    <select id="listPageRoles" parameterType="RoleInfo"  resultMap="roleResultMap">
+        select id,description,role_name,rights,create_user from sms_user_role where status=1
+         and id &gt;= #{role_id}
+    </select>
+    <select id="listAllRoles" parameterType="int"  resultMap="roleResultMap">
+        select id,description,role_name,rights,create_user from sms_user_role where status=1
+         and id &gt;= #{role_id}
+    </select>
+    <select id="getRoleById" parameterType="int" resultMap="roleResultMap">
+        select id,description,role_name,rights,create_user from sms_user_role where id=#{role_id} and status=1
+    </select>
+    <select id="getCountByName" parameterType="RoleInfo" resultType="int">
+        select count(1) from sms_user_role where role_name=#{roleName} and  status=1
+        <if test="role_id!=null or role_id>0">
+         and id!=#{role_id}
+        </if>
+    </select>
+    
+    <insert id="insertRole"  useGeneratedKeys="true" keyProperty="role_id"  parameterType="RoleInfo" >
+        insert into sms_user_role (ROLE_NAME,DESCRIPTION,CREATE_USER,CREATE_TIME) values (#{roleName,jdbcType=VARCHAR},#{description,jdbcType=VARCHAR},#{create_user,jdbcType=VARCHAR},sysdate())
+    </insert>
+    
+    <update id="updateRoleBaseInfo" parameterType="RoleInfo">
+        update sms_user_role set role_name=#{roleName} where id=#{role_id}
+    </update>
+    <update id="updateRoleRights" parameterType="RoleInfo">
+        update sms_user_role set rights=#{rights} where id=#{role_id}
+    </update>
+    <update id="deleteRoleById" parameterType="int">
+        update  sms_user_role set status=2 where id=#{role_id}
+        
+    </update>
+</mapper>
